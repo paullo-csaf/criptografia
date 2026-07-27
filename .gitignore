@@ -1,1 +1,8 @@
-/target
+escriba_arcano
+*.o
+build/
+backup/
+.vscode/
+modularizar.sh
+escriba_arcano
+rsa
