@@ -173,7 +173,7 @@ void dialogoDesenhar(
 
     /*
      * Durante CENA_MAGO_APARECENDO,
-     * só desenhamos o mago.
+     * só desenha o mago.
      */
     if (jogo->cena != CENA_DIALOGO) {
         return;
