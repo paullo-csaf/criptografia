@@ -42,6 +42,74 @@ void editorApagarUltimoUtf8(
     texto[*tamanhoBytes] = '\0';
 }
 
+static void desenharTextoComContorno(
+    Font fonte,
+    const char *texto,
+    Vector2 posicao,
+    float tamanho,
+    float espacamento,
+    Color cor,
+    Color corContorno,
+    float espessura
+) {
+    DrawTextEx(
+        fonte,
+        texto,
+        (Vector2){
+            posicao.x - espessura,
+            posicao.y
+        },
+        tamanho,
+        espacamento,
+        corContorno
+    );
+
+    DrawTextEx(
+        fonte,
+        texto,
+        (Vector2){
+            posicao.x + espessura,
+            posicao.y
+        },
+        tamanho,
+        espacamento,
+        corContorno
+    );
+
+    DrawTextEx(
+        fonte,
+        texto,
+        (Vector2){
+            posicao.x,
+            posicao.y - espessura
+        },
+        tamanho,
+        espacamento,
+        corContorno
+    );
+
+    DrawTextEx(
+        fonte,
+        texto,
+        (Vector2){
+            posicao.x,
+            posicao.y + espessura
+        },
+        tamanho,
+        espacamento,
+        corContorno
+    );
+
+    DrawTextEx(
+        fonte,
+        texto,
+        posicao,
+        tamanho,
+        espacamento,
+        cor
+    );
+}
+
 /*
  * Converte um codepoint Unicode para UTF-8
  * e o adiciona ao texto.
@@ -207,6 +275,52 @@ Vector2 editorDesenharTextoComQuebra(
             break;
         }
 
+        const float contorno = 1.5f;
+
+        DrawTextCodepoint(
+            fonte,
+            codepoint,
+            (Vector2){
+                posicao.x - contorno,
+                posicao.y
+            },
+            tamanhoFonte,
+            BLACK
+        );
+
+        DrawTextCodepoint(
+            fonte,
+            codepoint,
+            (Vector2){
+                posicao.x + contorno,
+                posicao.y
+            },
+            tamanhoFonte,
+            BLACK
+        );
+
+        DrawTextCodepoint(
+            fonte,
+            codepoint,
+            (Vector2){
+                posicao.x,
+                posicao.y - contorno
+            },
+            tamanhoFonte,
+            BLACK
+        );
+
+        DrawTextCodepoint(
+            fonte,
+            codepoint,
+            (Vector2){
+                posicao.x,
+                posicao.y + contorno
+            },
+            tamanhoFonte,
+            BLACK
+        );
+
         DrawTextCodepoint(
             fonte,
             codepoint,
@@ -351,16 +465,63 @@ void editorDesenhar(
         1.0f
     );
 
+    Vector2 posicaoTitulo = {
+    (LARGURA_JANELA - medidaTitulo.x) / 2.0f,
+    38.0f
+    };
+
     DrawTextEx(
         fonte,
         titulo,
         (Vector2){
-            (
-                LARGURA_JANELA -
-                medidaTitulo.x
-            ) / 2.0f,
-            38.0f
+            posicaoTitulo.x - 2.0f,
+            posicaoTitulo.y
         },
+        31.0f,
+        1.0f,
+        BLACK
+    );
+
+    DrawTextEx(
+        fonte,
+        titulo,
+        (Vector2){
+            posicaoTitulo.x + 2.0f,
+            posicaoTitulo.y
+        },
+        31.0f,
+        1.0f,
+        BLACK
+    );
+
+    DrawTextEx(
+        fonte,
+        titulo,
+        (Vector2){
+            posicaoTitulo.x,
+            posicaoTitulo.y - 2.0f
+        },
+        31.0f,
+        1.0f,
+        BLACK
+    );
+
+    DrawTextEx(
+        fonte,
+        titulo,
+        (Vector2){
+            posicaoTitulo.x,
+            posicaoTitulo.y + 2.0f
+        },
+        31.0f,
+        1.0f,
+        BLACK
+    );
+
+    DrawTextEx(
+        fonte,
+        titulo,
+        posicaoTitulo,
         31.0f,
         1.0f,
         RAYWHITE
@@ -387,10 +548,10 @@ void editorDesenhar(
         fonte,
         jogo->mensagem,
         areaTexto,
-        28.0f,
+        30.0f,
         1.0f,
-        37.0f,
-        (Color){224, 207, 177, 255}
+        39.0f,
+        RAYWHITE
     );
 
     /*
@@ -410,138 +571,36 @@ void editorDesenhar(
 
     EndScissorMode();
 
-    DrawTextEx(
-        fonte,
-        "ENTER: nova linha",
-        (Vector2){79.0f, 475.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
+desenharTextoComContorno(
+    fonte,
+    "ENTER: nova linha",
+    (Vector2){80.0f, 475.0f},
+    24.0f,
+    1.0f,
+    GRAY,
+    BLACK,
+    1.0f
+);
 
-    DrawTextEx(
-        fonte,
-        "ENTER: nova linha",
-        (Vector2){81.0f, 475.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
+desenharTextoComContorno(
+    fonte,
+    "ESC: voltar",
+    (Vector2){390.0f, 475.0f},
+    24.0f,
+    1.0f,
+    GRAY,
+    BLACK,
+    1.0f
+);
 
-    DrawTextEx(
-        fonte,
-        "ENTER: nova linha",
-        (Vector2){80.0f, 474.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "ENTER: nova linha",
-        (Vector2){80.0f, 476.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "ENTER: nova linha",
-        (Vector2){80.0f, 475.0f},
-        24.0f,
-        1.0f,
-        GRAY
-    );
-
-    DrawTextEx(
-        fonte,
-        "ESC: voltar",
-        (Vector2){389.0f, 475.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "ESC: voltar",
-        (Vector2){391.0f, 475.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "ESC: voltar",
-        (Vector2){390.0f, 474.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "ESC: voltar",
-        (Vector2){390.0f, 476.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "ESC: voltar",
-        (Vector2){390.0f, 475.0f},
-        24.0f,
-        1.0f,
-        GRAY
-    );
-
-    DrawTextEx(
-        fonte,
-        "CTRL + ENTER: confirmar",
-        (Vector2){589.0f, 475.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "CTRL + ENTER: confirmar",
-        (Vector2){591.0f, 475.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "CTRL + ENTER: confirmar",
-        (Vector2){590.0f, 474.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "CTRL + ENTER: confirmar",
-        (Vector2){590.0f, 476.0f},
-        24.0f,
-        1.0f,
-        BLACK
-    );
-
-    DrawTextEx(
-        fonte,
-        "CTRL + ENTER: confirmar",
-        (Vector2){590.0f, 475.0f},
-        24.0f,
-        1.0f,
-        SKYBLUE
-    );
+ desenharTextoComContorno(
+    fonte,
+    "CTRL + ENTER: confirmar",
+    (Vector2){590.0f, 475.0f},
+    24.0f,
+    1.0f,
+    SKYBLUE,
+    BLACK,
+    1.0f
+);
 }
